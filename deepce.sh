@@ -125,6 +125,7 @@ TIP_DOCKER_ROOTLESS="In rootless mode privilege escalation to root will not be p
 TIP_CVE_2019_5021="Alpine linux version 3.3.x-3.5.x accidentally allow users to login as root with a blank password, if we have command execution in the container we can become root using su root"
 TIP_CVE_2019_13139="Docker versions before 18.09.4 are vulnerable to a command execution vulnerability when parsing URLs"
 TIP_CVE_2019_5736="Docker versions before 18.09.2 are vulnerable to a container escape by overwriting the runC binary"
+TIP_CVE_2025_9074="Docker Desktop versions between 4.25 to 4.44.2 on Windows and MacOS are vulnerable to a container escape via a malicious image. See https://github.com/PtechAmanja/CVE-2025-9074-Docker-Desktop-Container-Escape"
 
 TIP_SYS_MODULE="Giving the container the SYS_MODULE privilege allows for kernel modules to be mounted. Using this, a malicious module can be used to execute code as root on the host."
 
