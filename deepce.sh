@@ -646,6 +646,50 @@ containerExploits() {
       printNo
     fi
   fi
+
+  # If docker api is exposed check for CVE-2025-9074
+  if [ -x "$(command -v curl)" ] || [ -x "$(command -v wget)" ]; then
+    printQuestion "Docker API exposed ......."
+    api_available="0"
+    
+    if [ -x "$(command -v curl)" ]; then
+      curl -s --connect-timeout 1 http://192.168.65.7:2375/version >/dev/null 2>&1
+      if [ $? -eq 0 ]; then
+        api_available="1"
+      fi
+    elif [ -x "$(command -v wget)" ]; then
+      wget -O - http://192.168.65.7:2375/version --connect-timeout=1 --tries=1 -q >/dev/null 2>&1
+      if [ $? -eq 0 ]; then
+        api_available="1"
+      fi
+    fi
+    
+    if [ "$api_available" = "0" ]; then
+      printNo
+      return
+    fi
+    
+    printSuccess "Yes"
+    printQuestion "└── CVE-2025-9074 ......."
+    
+    if [ -x "$(command -v curl)" ]; then
+      curl -s --connect-timeout 1 http://192.168.65.7:2375/containers/json >/dev/null 2>&1
+      if [ $? -eq 0 ]; then
+        printYesEx
+        printTip "$TIP_CVE_2025_9074"
+      else
+        printNo
+      fi
+    elif [ -x "$(command -v wget)" ]; then
+      wget -O - http://192.168.65.7:2375/containers/json --connect-timeout=1 --tries=1 -q >/dev/null 2>&1
+      if [ $? -eq 0 ]; then
+        printYesEx
+        printTip "$TIP_CVE_2025_9074"
+      else
+        printNo
+      fi
+    fi
+  fi
 }
 
 enumerateContainers() {
